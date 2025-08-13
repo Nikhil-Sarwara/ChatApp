@@ -4,7 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+<<<<<<< HEAD
 		  <PreserveCompilationContext>true</PreserveCompilationContext>
+=======
+>>>>>>> 3b5d76112d4a2224383838e7111dcf8fda727a88
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +17,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.8" />
+=======
+>>>>>>> 3b5d76112d4a2224383838e7111dcf8fda727a88
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.6.8" />

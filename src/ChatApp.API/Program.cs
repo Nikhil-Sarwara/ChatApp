@@ -19,6 +19,7 @@ public partial class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Add services to the container.
         // JWT Configuration
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["SecretKey"];
@@ -46,7 +47,13 @@ public partial class Program
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        });
+        builder.Services.AddAuthorization(options =>
+        {
             options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+        });
+        builder.Services.AddAuthorization(options =>
+        {
             options.AddPolicy("Authenticated", policy => policy.RequireAuthenticatedUser());
         });
 
@@ -61,11 +68,11 @@ public partial class Program
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy =>
-            {
+                {
                 policy.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
-            });
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
         });
 
         // DbContext
@@ -75,8 +82,8 @@ public partial class Program
         if (builder.Environment.EnvironmentName != "Test")
         {
             // Register your real DB
-            builder.Services.AddDbContext<ChatAppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContext<ChatAppDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
         }
         else
         {
@@ -123,23 +130,23 @@ public partial class Program
         if (app.Environment.EnvironmentName != "Test") // Add this check
         {
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                var connectionString = config.GetConnectionString("DefaultConnection");
+        using (var scope = app.Services.CreateScope())
+        {
+            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var connectionString = config.GetConnectionString("DefaultConnection");
 
-                try
-                {
-                    using var conn = new NpgsqlConnection(connectionString);
-                    conn.Open();
-                    Console.WriteLine("Database connection successful.");
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Failed to connect to the database: " + ex.Message);
-                    return; // Exit app early if DB connection fails
-                }
+            try
+            {
+                using var conn = new NpgsqlConnection(connectionString);
+                conn.Open();
+                Console.WriteLine("Database connection successful.");
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to connect to the database: " + ex.Message);
+                return; // Exit app early if DB connection fails
+            }
             }
 
         }
@@ -152,6 +159,9 @@ public partial class Program
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChatApp API V1");
             });
+
+            // Use Scalar API documentation
+            //app.MapScalarApiReference("/scalar");
         }
 
         app.UseRouting();
@@ -159,6 +169,7 @@ public partial class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        app.UseCors("AllowAll");
         app.UseHttpsRedirection();
 
         app.Run();

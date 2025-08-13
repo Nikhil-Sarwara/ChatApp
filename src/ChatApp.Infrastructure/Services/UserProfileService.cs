@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using ChatApp.Application.DTOs;
 using ChatApp.Application.Interfaces;
 using ChatApp.Infrastructure.Data;
@@ -46,3 +47,23 @@ namespace ChatApp.Infrastructure.Services
         }
     }
 }
+=======
+using ChatApp.Application.DTOs.User;
+using ChatApp.Application.Interfaces;
+using ChatApp.Domain.Entities;
+using ChatApp.Infrastructure.Data;
+using System;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+
+namespace ChatApp.Infrastructure.Services
+{
+    public class UserprofileService: IUserProfileService
+    {
+        public class Task<UserProfileDto> getProfileAsync(GUID userId) {
+
+        }
+    }
+}
+>>>>>>> 3b5d76112d4a2224383838e7111dcf8fda727a88
